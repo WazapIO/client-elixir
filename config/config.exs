@@ -7,7 +7,7 @@
 # General application configuration
 import Config
 
-config :whatsapi, base_url: "/api"
+config :whats_api, base_url: "/api"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

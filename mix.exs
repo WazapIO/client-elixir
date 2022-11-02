@@ -1,9 +1,9 @@
-defmodule WhatsAPIGo.Mixfile do
+defmodule WhatsAPI.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :whatsapi,
+      app: :whats_api,
       version: "2.0",
       elixir: "~> 1.10",
       build_embedded: Mix.env() == :prod,
@@ -41,7 +41,7 @@ defmodule WhatsAPIGo.Mixfile do
 
    defp package do
       [
-        name: "whatsapi",
+        name: "whats_api",
         files: ~w(.formatter.exs config lib mix.exs README* LICENSE*),
       ]
   end

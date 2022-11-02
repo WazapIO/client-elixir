@@ -7,6 +7,6 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
-if base_url = System.get_env("WHATS_APIGO_BASE_URI") do
-  config :whats_apigo, base_url: base_url
+if base_url = System.get_env("COM/WHATSAPI_BASE_URI") do
+  config :"com/whatsapi", base_url: base_url
 end

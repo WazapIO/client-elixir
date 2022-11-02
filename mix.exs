@@ -3,7 +3,7 @@ defmodule WhatsAPIGo.Mixfile do
 
   def project do
     [
-      app: :whats_apigo,
+      app: :"com/whatsapi",
       version: "2.0",
       elixir: "~> 1.10",
       build_embedded: Mix.env() == :prod,
@@ -41,7 +41,7 @@ defmodule WhatsAPIGo.Mixfile do
 
    defp package do
       [
-        name: "whats_apigo",
+        name: "com/whatsapi",
         files: ~w(.formatter.exs config lib mix.exs README* LICENSE*),
       ]
   end

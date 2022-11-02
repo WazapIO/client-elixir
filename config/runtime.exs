@@ -7,6 +7,6 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
-if base_url = System.get_env("COM/WHATSAPI_BASE_URI") do
-  config :"com/whatsapi", base_url: base_url
+if base_url = System.get_env("WHATSAPI_BASE_URI") do
+  config :whatsapi, base_url: base_url
 end

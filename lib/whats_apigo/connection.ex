@@ -13,12 +13,12 @@ defmodule WhatsAPIGo.Connection do
 
   The default base URL can also be set as:
 
-      config :"com/whatsapi",
+      config :whatsapi,
         :base_url, "/api"
   """
 
   @default_base_url Application.compile_env(
-                      :"com/whatsapi",
+                      :whatsapi,
                       :base_url,
                       "/api"
                     )
@@ -82,7 +82,7 @@ defmodule WhatsAPIGo.Connection do
       Keyword.get(
         options,
         :base_url,
-        Application.get_env(:"com/whatsapi", :base_url, @default_base_url)
+        Application.get_env(:whatsapi, :base_url, @default_base_url)
       )
 
     tesla_options = Application.get_env(:tesla, __MODULE__, [])

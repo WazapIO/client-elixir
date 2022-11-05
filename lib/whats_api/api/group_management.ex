@@ -21,10 +21,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_admin_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_admin_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_admin_get(connection, instance_key, _opts \\ []) do
     request =
       %{}
@@ -35,11 +35,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -51,15 +51,15 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsGroupCreatePayload): Group create payload
+  - `data` (GroupCreatePayload): Group create payload
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_create_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsGroupCreatePayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_create_post(Tesla.Env.client, String.t, WhatsAPI.Model.GroupCreatePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_create_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -71,11 +71,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -92,10 +92,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_get(connection, instance_key, opts \\ []) do
     optional_params = %{
       :include_participants => :query
@@ -111,11 +111,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -133,10 +133,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_announce_put(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_announce_put(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_announce_put(connection, instance_key, announce, group_id, _opts \\ []) do
     request =
       %{}
@@ -148,11 +148,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -169,10 +169,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_delete(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_delete(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_delete(connection, instance_key, group_id, _opts \\ []) do
     request =
       %{}
@@ -183,11 +183,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -200,15 +200,15 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `group_id` (String.t): Group id of the group
-  - `data` (StructsGroupUpdateDescriptionPayload): Group description data
+  - `data` (GroupUpdateDescriptionPayload): Group description data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_description_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.StructsGroupUpdateDescriptionPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_description_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateDescriptionPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_description_put(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
@@ -220,11 +220,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -241,10 +241,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_get(connection, instance_key, group_id, _opts \\ []) do
     request =
       %{}
@@ -255,11 +255,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -276,10 +276,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_invite_code_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_invite_code_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_invite_code_get(connection, instance_key, group_id, _opts \\ []) do
     request =
       %{}
@@ -290,11 +290,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -312,10 +312,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_lock_put(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_lock_put(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_lock_put(connection, instance_key, locked, group_id, _opts \\ []) do
     request =
       %{}
@@ -327,11 +327,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -344,15 +344,15 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `group_id` (String.t): Group id of the group
-  - `data` (StructsGroupUpdateNamePayload): Group name data
+  - `data` (GroupUpdateNamePayload): Group name data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_name_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.StructsGroupUpdateNamePayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_name_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateNamePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_name_put(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
@@ -364,11 +364,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -381,15 +381,15 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `group_id` (String.t): Group id of the group
-  - `data` (StructsGroupUpdateParticipantsPayload): Group update payload
+  - `data` (GroupUpdateParticipantsPayload): Group update payload
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_participants_add_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.StructsGroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_participants_add_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_participants_add_post(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
@@ -401,11 +401,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -418,15 +418,15 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `group_id` (String.t): Group id of the group
-  - `data` (StructsGroupUpdateParticipantsPayload): Group update payload
+  - `data` (GroupUpdateParticipantsPayload): Group update payload
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_participants_demote_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.StructsGroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_participants_demote_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_participants_demote_put(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
@@ -438,11 +438,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -455,15 +455,15 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `group_id` (String.t): Group id of the group
-  - `data` (StructsGroupUpdateParticipantsPayload): Group update payload
+  - `data` (GroupUpdateParticipantsPayload): Group update payload
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_participants_promote_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.StructsGroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_participants_promote_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_participants_promote_put(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
@@ -475,11 +475,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -492,15 +492,15 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `group_id` (String.t): Group id of the group
-  - `data` (StructsGroupUpdateParticipantsPayload): Group update payload
+  - `data` (GroupUpdateParticipantsPayload): Group update payload
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_participants_remove_delete(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.StructsGroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_participants_remove_delete(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_participants_remove_delete(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
@@ -512,11 +512,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -534,10 +534,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_profile_pic_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_group_id_profile_pic_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_group_id_profile_pic_put(connection, instance_key, group_id, instances_instance_key_groups_group_id_profile_pic_put_request, _opts \\ []) do
     request =
       %{}
@@ -549,11 +549,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -570,10 +570,10 @@ defmodule WhatsAPI.Api.GroupManagement do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_invite_info_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_groups_invite_info_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_groups_invite_info_get(connection, instance_key, invite_link, _opts \\ []) do
     request =
       %{}
@@ -585,11 +585,11 @@ defmodule WhatsAPI.Api.GroupManagement do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 end

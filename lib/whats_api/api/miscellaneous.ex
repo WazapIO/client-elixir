@@ -22,10 +22,10 @@ defmodule WhatsAPI.Api.Miscellaneous do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_misc_profile_pic_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_misc_profile_pic_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_misc_profile_pic_get(connection, instance_key, jid, _opts \\ []) do
     request =
       %{}
@@ -37,11 +37,11 @@ defmodule WhatsAPI.Api.Miscellaneous do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -53,15 +53,15 @@ defmodule WhatsAPI.Api.Miscellaneous do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsUserInfoPayload): Data
+  - `data` (UserInfoPayload): Data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_misc_user_info_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsUserInfoPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_misc_user_info_post(Tesla.Env.client, String.t, WhatsAPI.Model.UserInfoPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_misc_user_info_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -73,11 +73,11 @@ defmodule WhatsAPI.Api.Miscellaneous do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 end

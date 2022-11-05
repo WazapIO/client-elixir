@@ -21,10 +21,10 @@ defmodule WhatsAPI.Api.Instance do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_create_get(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_create_get(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_create_get(connection, opts \\ []) do
     optional_params = %{
       :instance_key => :query
@@ -40,11 +40,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -60,10 +60,10 @@ defmodule WhatsAPI.Api.Instance do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_contacts_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_contacts_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_contacts_get(connection, instance_key, _opts \\ []) do
     request =
       %{}
@@ -74,11 +74,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -94,10 +94,10 @@ defmodule WhatsAPI.Api.Instance do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_delete_delete(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_delete_delete(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_delete_delete(connection, instance_key, _opts \\ []) do
     request =
       %{}
@@ -108,11 +108,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -128,10 +128,10 @@ defmodule WhatsAPI.Api.Instance do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_get(connection, instance_key, _opts \\ []) do
     request =
       %{}
@@ -142,11 +142,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -162,10 +162,10 @@ defmodule WhatsAPI.Api.Instance do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_logout_delete(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_logout_delete(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_logout_delete(connection, instance_key, _opts \\ []) do
     request =
       %{}
@@ -176,11 +176,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -196,10 +196,10 @@ defmodule WhatsAPI.Api.Instance do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_qrcode_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_qrcode_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_qrcode_get(connection, instance_key, _opts \\ []) do
     request =
       %{}
@@ -210,11 +210,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -226,15 +226,15 @@ defmodule WhatsAPI.Api.Instance do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsWebhookPayload): Message data
+  - `data` (WebhookPayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_webhook_put(Tesla.Env.client, String.t, WhatsAPI.Model.StructsWebhookPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_webhook_put(Tesla.Env.client, String.t, WhatsAPI.Model.WebhookPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_webhook_put(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -246,11 +246,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -265,10 +265,10 @@ defmodule WhatsAPI.Api.Instance do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_list_get(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_list_get(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_list_get(connection, _opts \\ []) do
     request =
       %{}
@@ -279,11 +279,11 @@ defmodule WhatsAPI.Api.Instance do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 end

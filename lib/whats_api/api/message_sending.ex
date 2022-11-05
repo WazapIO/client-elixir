@@ -10,40 +10,6 @@ defmodule WhatsAPI.Api.MessageSending do
   import WhatsAPI.RequestBuilder
 
   @doc """
-  Fetches the catlog.
-  Gets list of all products registered by you.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_business_catalog_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_business_catalog_get(connection, instance_key, _opts \\ []) do
-    request =
-      %{}
-      |> method(:get)
-      |> url("/instances/#{instance_key}/business/catalog")
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
-    ])
-  end
-
-  @doc """
   Send raw audio.
   Sends a audio message by uploading to the WhatsApp servers every time. This is not recommended for bulk sending.
 
@@ -58,10 +24,10 @@ defmodule WhatsAPI.Api.MessageSending do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_audio_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendAudioPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_audio_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendAudioPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_audio_post(connection, instance_key, to, instances_instance_key_send_audio_post_request, opts \\ []) do
     optional_params = %{
       :caption => :query
@@ -79,11 +45,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -95,15 +61,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsButtonMessageWithMediaPayload): Message data
+  - `data` (ButtonMessageWithMediaPayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_button_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsButtonMessageWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_button_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.ButtonMessageWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_button_media_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -115,11 +81,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -131,15 +97,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsButtonMessagePayload): Message data
+  - `data` (ButtonMessagePayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_buttons_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsButtonMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_buttons_post(Tesla.Env.client, String.t, WhatsAPI.Model.ButtonMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_buttons_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -151,11 +117,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -167,15 +133,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsContactMessagePayload): Message data
+  - `data` (ContactMessagePayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_contact_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsContactMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_contact_post(Tesla.Env.client, String.t, WhatsAPI.Model.ContactMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_contact_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -187,11 +153,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -210,10 +176,10 @@ defmodule WhatsAPI.Api.MessageSending do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_document_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendDocumentPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_document_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendDocumentPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_document_post(connection, instance_key, to, instances_instance_key_send_document_post_request, opts \\ []) do
     optional_params = %{
       :caption => :query
@@ -231,11 +197,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -254,10 +220,10 @@ defmodule WhatsAPI.Api.MessageSending do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_image_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendImagePostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_image_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendImagePostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_image_post(connection, instance_key, to, instances_instance_key_send_image_post_request, opts \\ []) do
     optional_params = %{
       :caption => :query
@@ -275,11 +241,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -291,15 +257,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsListMessagePayload): Message data
+  - `data` (ListMessagePayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_list_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsListMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_list_post(Tesla.Env.client, String.t, WhatsAPI.Model.ListMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_list_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -311,11 +277,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -327,15 +293,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsLocationMessagePayload): Message data
+  - `data` (LocationMessagePayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_location_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsLocationMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_location_post(Tesla.Env.client, String.t, WhatsAPI.Model.LocationMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_location_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -347,11 +313,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -363,15 +329,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsSendMediaPayload): Message data
+  - `data` (SendMediaPayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsSendMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.SendMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_media_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -383,31 +349,31 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
   @doc """
-  Send a Poll message with media.
-  Sends an interactive poll message with a media header to the given user. The poll message is a new feature that is currently in beta.
+  Send a Poll message.
+  Sends an interactive poll message to the given user. The poll message is a new feature that is currently in beta.
 
   ### Parameters
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsPollMessagePayload): Message data
+  - `data` (PollMessagePayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_poll_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsPollMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_poll_post(Tesla.Env.client, String.t, WhatsAPI.Model.PollMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_poll_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -419,11 +385,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -435,15 +401,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsTemplateButtonWithMediaPayload): Message data
+  - `data` (TemplateButtonWithMediaPayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_template_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsTemplateButtonWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_template_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.TemplateButtonWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_template_media_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -455,11 +421,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -471,15 +437,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsTemplateButtonPayload): Message data
+  - `data` (TemplateButtonPayload): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_template_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsTemplateButtonPayload.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_template_post(Tesla.Env.client, String.t, WhatsAPI.Model.TemplateButtonPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_template_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -491,11 +457,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -507,15 +473,15 @@ defmodule WhatsAPI.Api.MessageSending do
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
-  - `data` (StructsTextMessage): Message data
+  - `data` (TextMessage): Message data
   - `opts` (keyword): Optional parameters
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_text_post(Tesla.Env.client, String.t, WhatsAPI.Model.StructsTextMessage.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_text_post(Tesla.Env.client, String.t, WhatsAPI.Model.TextMessage.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_text_post(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
@@ -527,11 +493,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -549,10 +515,10 @@ defmodule WhatsAPI.Api.MessageSending do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_upload_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendUploadPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_upload_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendUploadPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_upload_post(connection, instance_key, type, instances_instance_key_send_upload_post_request, _opts \\ []) do
     request =
       %{}
@@ -565,11 +531,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 
@@ -588,10 +554,10 @@ defmodule WhatsAPI.Api.MessageSending do
 
   ### Returns
 
-  - `{:ok, WhatsAPI.Model.MainApiResponse.t}` on success
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_video_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendVideoPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.MainApiResponse.t} | {:error, Tesla.Env.t}
+  @spec instances_instance_key_send_video_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendVideoPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
   def instances_instance_key_send_video_post(connection, instance_key, to, instances_instance_key_send_video_post_request, opts \\ []) do
     optional_params = %{
       :caption => :query
@@ -609,11 +575,11 @@ defmodule WhatsAPI.Api.MessageSending do
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, %WhatsAPI.Model.MainApiResponse{}},
-      {400, %WhatsAPI.Model.MainApiResponse{}},
-      {401, %WhatsAPI.Model.MainApiResponse{}},
-      {404, %WhatsAPI.Model.MainApiResponse{}},
-      {500, %WhatsAPI.Model.MainApiResponse{}}
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
 end

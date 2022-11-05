@@ -10,31 +10,28 @@ defmodule WhatsAPI.Api.Instance do
   import WhatsAPI.RequestBuilder
 
   @doc """
-  Creates a new instance key.
-  This endpoint is used to create a new WhatsApp Web instance.
+  Change Webhook url.
+  Changes the webhook url of an instance.
 
   ### Parameters
 
   - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `data` (WebhookPayload): Message data
   - `opts` (keyword): Optional parameters
-    - `:instance_key` (String.t): Insert instance key if you want to provide custom key
 
   ### Returns
 
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_create_get(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_create_get(connection, opts \\ []) do
-    optional_params = %{
-      :instance_key => :query
-    }
-
+  @spec change_webhook_url(Tesla.Env.client, String.t, WhatsAPI.Model.WebhookPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def change_webhook_url(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
-      |> method(:get)
-      |> url("/instances/create")
-      |> add_optional_params(optional_params, opts)
+      |> method(:put)
+      |> url("/instances/#{instance_key}/webhook")
+      |> add_param(:body, :body, data)
       |> Enum.into([])
 
     connection
@@ -49,26 +46,31 @@ defmodule WhatsAPI.Api.Instance do
   end
 
   @doc """
-  Get contacts.
-  Fetches the list of contacts in the instance.
+  Creates a new instance key.
+  This endpoint is used to create a new WhatsApp Web instance.
 
   ### Parameters
 
   - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
   - `opts` (keyword): Optional parameters
+    - `:instance_key` (String.t): Insert instance key if you want to provide custom key
 
   ### Returns
 
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_contacts_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_contacts_get(connection, instance_key, _opts \\ []) do
+  @spec create_instance(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def create_instance(connection, opts \\ []) do
+    optional_params = %{
+      :instance_key => :query
+    }
+
     request =
       %{}
       |> method(:get)
-      |> url("/instances/#{instance_key}/contacts")
+      |> url("/instances/create")
+      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection
@@ -97,12 +99,46 @@ defmodule WhatsAPI.Api.Instance do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_delete_delete(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_delete_delete(connection, instance_key, _opts \\ []) do
+  @spec delete_instance(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def delete_instance(connection, instance_key, _opts \\ []) do
     request =
       %{}
       |> method(:delete)
       |> url("/instances/#{instance_key}/delete")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Get contacts.
+  Fetches the list of contacts in the instance.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec get_contacts(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_contacts(connection, instance_key, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/contacts")
       |> Enum.into([])
 
     connection
@@ -131,46 +167,12 @@ defmodule WhatsAPI.Api.Instance do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_get(connection, instance_key, _opts \\ []) do
+  @spec get_instance(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_instance(connection, instance_key, _opts \\ []) do
     request =
       %{}
       |> method(:get)
       |> url("/instances/#{instance_key}/")
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Logout Instance.
-  Logouts of the instance with the provided key.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_logout_delete(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_logout_delete(connection, instance_key, _opts \\ []) do
-    request =
-      %{}
-      |> method(:delete)
-      |> url("/instances/#{instance_key}/logout")
       |> Enum.into([])
 
     connection
@@ -199,48 +201,12 @@ defmodule WhatsAPI.Api.Instance do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_qrcode_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_qrcode_get(connection, instance_key, _opts \\ []) do
+  @spec get_qr_code(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_qr_code(connection, instance_key, _opts \\ []) do
     request =
       %{}
       |> method(:get)
       |> url("/instances/#{instance_key}/qrcode")
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Change Webhook url.
-  Changes the webhook url of an instance.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `data` (WebhookPayload): Message data
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_webhook_put(Tesla.Env.client, String.t, WhatsAPI.Model.WebhookPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_webhook_put(connection, instance_key, data, _opts \\ []) do
-    request =
-      %{}
-      |> method(:put)
-      |> url("/instances/#{instance_key}/webhook")
-      |> add_param(:body, :body, data)
       |> Enum.into([])
 
     connection
@@ -268,12 +234,46 @@ defmodule WhatsAPI.Api.Instance do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_list_get(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_list_get(connection, _opts \\ []) do
+  @spec list_instances(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def list_instances(connection, _opts \\ []) do
     request =
       %{}
       |> method(:get)
       |> url("/instances/list")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Logout Instance.
+  Logouts of the instance with the provided key.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec logout_instance(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def logout_instance(connection, instance_key, _opts \\ []) do
+    request =
+      %{}
+      |> method(:delete)
+      |> url("/instances/#{instance_key}/logout")
       |> Enum.into([])
 
     connection

@@ -24,8 +24,8 @@ defmodule WhatsAPI.Api.BusinessManagement do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_business_catalog_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_business_catalog_get(connection, instance_key, _opts \\ []) do
+  @spec fetch_catlog(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def fetch_catlog(connection, instance_key, _opts \\ []) do
     request =
       %{}
       |> method(:get)

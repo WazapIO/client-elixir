@@ -18,7 +18,7 @@ defmodule WhatsAPI.Api.MessageSending do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `to` (String.t): The recipient's number
-  - `instances_instance_key_send_audio_post_request` (InstancesInstanceKeySendAudioPostRequest): 
+  - `send_audio_request` (SendAudioRequest): 
   - `opts` (keyword): Optional parameters
     - `:caption` (String.t): Attached caption
 
@@ -27,8 +27,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_audio_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendAudioPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_audio_post(connection, instance_key, to, instances_instance_key_send_audio_post_request, opts \\ []) do
+  @spec send_audio(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.SendAudioRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_audio(connection, instance_key, to, send_audio_request, opts \\ []) do
     optional_params = %{
       :caption => :query
     }
@@ -38,44 +38,8 @@ defmodule WhatsAPI.Api.MessageSending do
       |> method(:post)
       |> url("/instances/#{instance_key}/send/audio")
       |> add_param(:query, :to, to)
-      |> add_param(:body, :body, instances_instance_key_send_audio_post_request)
+      |> add_param(:body, :body, send_audio_request)
       |> add_optional_params(optional_params, opts)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Send a button message with a media header.
-  Sends an interactive button message to the given user. This message also has media header with it. Make sure that all the button ids are unique
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `data` (ButtonMessageWithMediaPayload): Message data
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_send_button_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.ButtonMessageWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_button_media_post(connection, instance_key, data, _opts \\ []) do
-    request =
-      %{}
-      |> method(:post)
-      |> url("/instances/#{instance_key}/send/button-media")
-      |> add_param(:body, :body, data)
       |> Enum.into([])
 
     connection
@@ -105,12 +69,48 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_buttons_post(Tesla.Env.client, String.t, WhatsAPI.Model.ButtonMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_buttons_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_button_message(Tesla.Env.client, String.t, WhatsAPI.Model.ButtonMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_button_message(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
       |> url("/instances/#{instance_key}/send/buttons")
+      |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Send a button message with a media header.
+  Sends an interactive button message to the given user. This message also has media header with it. Make sure that all the button ids are unique
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `data` (ButtonMessageWithMediaPayload): Message data
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec send_button_with_media(Tesla.Env.client, String.t, WhatsAPI.Model.ButtonMessageWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_button_with_media(connection, instance_key, data, _opts \\ []) do
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/send/button-media")
       |> add_param(:body, :body, data)
       |> Enum.into([])
 
@@ -141,8 +141,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_contact_post(Tesla.Env.client, String.t, WhatsAPI.Model.ContactMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_contact_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_contact(Tesla.Env.client, String.t, WhatsAPI.Model.ContactMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_contact(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
@@ -170,7 +170,7 @@ defmodule WhatsAPI.Api.MessageSending do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `to` (String.t): The recipient's number
-  - `instances_instance_key_send_document_post_request` (InstancesInstanceKeySendDocumentPostRequest): 
+  - `send_document_request` (SendDocumentRequest): 
   - `opts` (keyword): Optional parameters
     - `:caption` (String.t): Attached caption
 
@@ -179,8 +179,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_document_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendDocumentPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_document_post(connection, instance_key, to, instances_instance_key_send_document_post_request, opts \\ []) do
+  @spec send_document(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.SendDocumentRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_document(connection, instance_key, to, send_document_request, opts \\ []) do
     optional_params = %{
       :caption => :query
     }
@@ -190,7 +190,7 @@ defmodule WhatsAPI.Api.MessageSending do
       |> method(:post)
       |> url("/instances/#{instance_key}/send/document")
       |> add_param(:query, :to, to)
-      |> add_param(:body, :body, instances_instance_key_send_document_post_request)
+      |> add_param(:body, :body, send_document_request)
       |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
@@ -214,7 +214,7 @@ defmodule WhatsAPI.Api.MessageSending do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `to` (String.t): The recipient's number
-  - `instances_instance_key_send_image_post_request` (InstancesInstanceKeySendImagePostRequest): 
+  - `send_image_request` (SendImageRequest): 
   - `opts` (keyword): Optional parameters
     - `:caption` (String.t): Attached caption
 
@@ -223,8 +223,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_image_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendImagePostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_image_post(connection, instance_key, to, instances_instance_key_send_image_post_request, opts \\ []) do
+  @spec send_image(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.SendImageRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_image(connection, instance_key, to, send_image_request, opts \\ []) do
     optional_params = %{
       :caption => :query
     }
@@ -234,7 +234,7 @@ defmodule WhatsAPI.Api.MessageSending do
       |> method(:post)
       |> url("/instances/#{instance_key}/send/image")
       |> add_param(:query, :to, to)
-      |> add_param(:body, :body, instances_instance_key_send_image_post_request)
+      |> add_param(:body, :body, send_image_request)
       |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
@@ -265,8 +265,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_list_post(Tesla.Env.client, String.t, WhatsAPI.Model.ListMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_list_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_list_message(Tesla.Env.client, String.t, WhatsAPI.Model.ListMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_list_message(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
@@ -301,8 +301,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_location_post(Tesla.Env.client, String.t, WhatsAPI.Model.LocationMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_location_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_location(Tesla.Env.client, String.t, WhatsAPI.Model.LocationMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_location(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
@@ -337,8 +337,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.SendMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_media_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_media_message(Tesla.Env.client, String.t, WhatsAPI.Model.SendMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_media_message(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
@@ -373,48 +373,12 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_poll_post(Tesla.Env.client, String.t, WhatsAPI.Model.PollMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_poll_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_poll_message(Tesla.Env.client, String.t, WhatsAPI.Model.PollMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_poll_message(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
       |> url("/instances/#{instance_key}/send/poll")
-      |> add_param(:body, :body, data)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Send a template message with media.
-  Sends an interactive template message with a media header to the given user. Note: The valid button types are \"replyButton\", \"urlButton\", \"callButton\"
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `data` (TemplateButtonWithMediaPayload): Message data
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_send_template_media_post(Tesla.Env.client, String.t, WhatsAPI.Model.TemplateButtonWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_template_media_post(connection, instance_key, data, _opts \\ []) do
-    request =
-      %{}
-      |> method(:post)
-      |> url("/instances/#{instance_key}/send/template-media")
       |> add_param(:body, :body, data)
       |> Enum.into([])
 
@@ -445,12 +409,48 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_template_post(Tesla.Env.client, String.t, WhatsAPI.Model.TemplateButtonPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_template_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_template(Tesla.Env.client, String.t, WhatsAPI.Model.TemplateButtonPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_template(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
       |> url("/instances/#{instance_key}/send/template")
+      |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Send a template message with media.
+  Sends an interactive template message with a media header to the given user. Note: The valid button types are \"replyButton\", \"urlButton\", \"callButton\"
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `data` (TemplateButtonWithMediaPayload): Message data
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec send_template_with_media(Tesla.Env.client, String.t, WhatsAPI.Model.TemplateButtonWithMediaPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_template_with_media(connection, instance_key, data, _opts \\ []) do
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/send/template-media")
       |> add_param(:body, :body, data)
       |> Enum.into([])
 
@@ -481,51 +481,13 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_text_post(Tesla.Env.client, String.t, WhatsAPI.Model.TextMessage.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_text_post(connection, instance_key, data, _opts \\ []) do
+  @spec send_text_message(Tesla.Env.client, String.t, WhatsAPI.Model.TextMessage.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_text_message(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
       |> url("/instances/#{instance_key}/send/text")
       |> add_param(:body, :body, data)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Upload media.
-  Uploads media to WhatsApp servers and returns the media keys. Store the returned media keys, as you will need them to send media messages
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `type` (String.t): Media type
-  - `instances_instance_key_send_upload_post_request` (InstancesInstanceKeySendUploadPostRequest): 
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_send_upload_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendUploadPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_upload_post(connection, instance_key, type, instances_instance_key_send_upload_post_request, _opts \\ []) do
-    request =
-      %{}
-      |> method(:post)
-      |> url("/instances/#{instance_key}/send/upload")
-      |> add_param(:query, :type, type)
-      |> add_param(:body, :body, instances_instance_key_send_upload_post_request)
       |> Enum.into([])
 
     connection
@@ -548,7 +510,7 @@ defmodule WhatsAPI.Api.MessageSending do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `to` (String.t): The recipient's number
-  - `instances_instance_key_send_video_post_request` (InstancesInstanceKeySendVideoPostRequest): 
+  - `send_video_request` (SendVideoRequest): 
   - `opts` (keyword): Optional parameters
     - `:caption` (String.t): Attached caption
 
@@ -557,8 +519,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_send_video_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeySendVideoPostRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_send_video_post(connection, instance_key, to, instances_instance_key_send_video_post_request, opts \\ []) do
+  @spec send_video(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.SendVideoRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_video(connection, instance_key, to, send_video_request, opts \\ []) do
     optional_params = %{
       :caption => :query
     }
@@ -568,8 +530,46 @@ defmodule WhatsAPI.Api.MessageSending do
       |> method(:post)
       |> url("/instances/#{instance_key}/send/video")
       |> add_param(:query, :to, to)
-      |> add_param(:body, :body, instances_instance_key_send_video_post_request)
+      |> add_param(:body, :body, send_video_request)
       |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Upload media.
+  Uploads media to WhatsApp servers and returns the media keys. Store the returned media keys, as you will need them to send media messages
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `type` (String.t): Media type
+  - `upload_media_request` (UploadMediaRequest): 
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec upload_media(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.UploadMediaRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def upload_media(connection, instance_key, type, upload_media_request, _opts \\ []) do
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/send/upload")
+      |> add_param(:query, :type, type)
+      |> add_param(:body, :body, upload_media_request)
       |> Enum.into([])
 
     connection

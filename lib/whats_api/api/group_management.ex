@@ -10,13 +10,15 @@ defmodule WhatsAPI.Api.GroupManagement do
   import WhatsAPI.RequestBuilder
 
   @doc """
-  Get admin groupss.
-  Returns list of all groups in which you are admin.
+  Add participant.
+  Handles adding participants to a group. You must be admin in the group or the query will fail.
 
   ### Parameters
 
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
+  - `group_id` (String.t): Group id of the group
+  - `data` (GroupUpdateParticipantsPayload): Group update payload
   - `opts` (keyword): Optional parameters
 
   ### Returns
@@ -24,12 +26,13 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_admin_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_admin_get(connection, instance_key, _opts \\ []) do
+  @spec add_participant(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def add_participant(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
-      |> method(:get)
-      |> url("/instances/#{instance_key}/groups/admin")
+      |> method(:post)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/participants/add")
+      |> add_param(:body, :body, data)
       |> Enum.into([])
 
     connection
@@ -59,342 +62,12 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_create_post(Tesla.Env.client, String.t, WhatsAPI.Model.GroupCreatePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_create_post(connection, instance_key, data, _opts \\ []) do
+  @spec create_group(Tesla.Env.client, String.t, WhatsAPI.Model.GroupCreatePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def create_group(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)
       |> url("/instances/#{instance_key}/groups/create")
-      |> add_param(:body, :body, data)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Get all groups.
-  Returns list of all groups with participants data. Set include_participants to false to exclude participants data.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `opts` (keyword): Optional parameters
-    - `:include_participants` (String.t): Include participants data
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_get(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_get(connection, instance_key, opts \\ []) do
-    optional_params = %{
-      :include_participants => :query
-    }
-
-    request =
-      %{}
-      |> method(:get)
-      |> url("/instances/#{instance_key}/groups/")
-      |> add_optional_params(optional_params, opts)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Set group announce.
-  Set if non-admins are allowed to send messages in groups
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `announce` (boolean()): Announce status
-  - `group_id` (String.t): Group id of the group
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_announce_put(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_announce_put(connection, instance_key, announce, group_id, _opts \\ []) do
-    request =
-      %{}
-      |> method(:put)
-      |> url("/instances/#{instance_key}/groups/#{group_id}/announce")
-      |> ensure_body()
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Leaves the group.
-  Leaves the specified group.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `group_id` (String.t): Group id of the group
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_delete(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_delete(connection, instance_key, group_id, _opts \\ []) do
-    request =
-      %{}
-      |> method(:delete)
-      |> url("/instances/#{instance_key}/groups/#{group_id}/")
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Set group description.
-  Changes the group description
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `group_id` (String.t): Group id of the group
-  - `data` (GroupUpdateDescriptionPayload): Group description data
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_description_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateDescriptionPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_description_put(connection, instance_key, group_id, data, _opts \\ []) do
-    request =
-      %{}
-      |> method(:put)
-      |> url("/instances/#{instance_key}/groups/#{group_id}/description")
-      |> add_param(:body, :body, data)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Get group.
-  Fetches the group data.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `group_id` (String.t): Group id of the group
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_get(connection, instance_key, group_id, _opts \\ []) do
-    request =
-      %{}
-      |> method(:get)
-      |> url("/instances/#{instance_key}/groups/#{group_id}")
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Get group invite code.
-  Gets the invite code of the group.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `group_id` (String.t): Group id of the group
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_invite_code_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_invite_code_get(connection, instance_key, group_id, _opts \\ []) do
-    request =
-      %{}
-      |> method(:get)
-      |> url("/instances/#{instance_key}/groups/#{group_id}/invite-code")
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Set group locked.
-  Set if non-admins are allowed to change the group dp and other stuff
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `locked` (boolean()): Locked status
-  - `group_id` (String.t): Group id of the group
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_lock_put(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_lock_put(connection, instance_key, locked, group_id, _opts \\ []) do
-    request =
-      %{}
-      |> method(:put)
-      |> url("/instances/#{instance_key}/groups/#{group_id}/lock")
-      |> ensure_body()
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Set group name.
-  Changes the group name. The max limit is 22 chars
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `group_id` (String.t): Group id of the group
-  - `data` (GroupUpdateNamePayload): Group name data
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_name_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateNamePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_name_put(connection, instance_key, group_id, data, _opts \\ []) do
-    request =
-      %{}
-      |> method(:put)
-      |> url("/instances/#{instance_key}/groups/#{group_id}/name")
-      |> add_param(:body, :body, data)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Add participant.
-  Handles adding participants to a group. You must be admin in the group or the query will fail.
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `group_id` (String.t): Group id of the group
-  - `data` (GroupUpdateParticipantsPayload): Group update payload
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_group_id_participants_add_post(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_participants_add_post(connection, instance_key, group_id, data, _opts \\ []) do
-    request =
-      %{}
-      |> method(:post)
-      |> url("/instances/#{instance_key}/groups/#{group_id}/participants/add")
       |> add_param(:body, :body, data)
       |> Enum.into([])
 
@@ -426,13 +99,228 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_participants_demote_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_participants_demote_put(connection, instance_key, group_id, data, _opts \\ []) do
+  @spec demote_participant(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def demote_participant(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
       |> method(:put)
       |> url("/instances/#{instance_key}/groups/#{group_id}/participants/demote")
       |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Get admin groups.
+  Returns list of all groups in which you are admin.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec get_admin_groups(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_admin_groups(connection, instance_key, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/groups/admin")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Get all groups.
+  Returns list of all groups with participants data. Set include_participants to false to exclude participants data.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `opts` (keyword): Optional parameters
+    - `:include_participants` (String.t): Include participants data
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec get_all_groups(Tesla.Env.client, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_all_groups(connection, instance_key, opts \\ []) do
+    optional_params = %{
+      :include_participants => :query
+    }
+
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/groups/")
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Get group.
+  Fetches the group data.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `group_id` (String.t): Group id of the group
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec get_group(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_group(connection, instance_key, group_id, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/groups/#{group_id}")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Get group from invite link.
+  Gets a group info from an invite link. An invite link is a link that can be used to join a group. It is usually in the format https://chat.whatsapp.com/{invitecode}
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `invite_link` (String.t): The invite link to check
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec get_group_from_invite_link(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_group_from_invite_link(connection, instance_key, invite_link, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/groups/invite-info")
+      |> add_param(:query, :invite_link, invite_link)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Get group invite code.
+  Gets the invite code of the group.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `group_id` (String.t): Group id of the group
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec get_group_invite_code(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_group_invite_code(connection, instance_key, group_id, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/invite-code")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Leaves the group.
+  Leaves the specified group.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `group_id` (String.t): Group id of the group
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec leave_group(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def leave_group(connection, instance_key, group_id, _opts \\ []) do
+    request =
+      %{}
+      |> method(:delete)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/")
       |> Enum.into([])
 
     connection
@@ -463,8 +351,8 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_participants_promote_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_participants_promote_put(connection, instance_key, group_id, data, _opts \\ []) do
+  @spec promote_participant(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def promote_participant(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
       |> method(:put)
@@ -500,12 +388,160 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_participants_remove_delete(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_participants_remove_delete(connection, instance_key, group_id, data, _opts \\ []) do
+  @spec remove_participant(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateParticipantsPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def remove_participant(connection, instance_key, group_id, data, _opts \\ []) do
     request =
       %{}
       |> method(:delete)
       |> url("/instances/#{instance_key}/groups/#{group_id}/participants/remove")
+      |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Set group announce.
+  Set if non-admins are allowed to send messages in groups
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `announce` (boolean()): Announce status
+  - `group_id` (String.t): Group id of the group
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec set_group_announce(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def set_group_announce(connection, instance_key, announce, group_id, _opts \\ []) do
+    request =
+      %{}
+      |> method(:put)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/announce")
+      |> ensure_body()
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Set group description.
+  Changes the group description
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `group_id` (String.t): Group id of the group
+  - `data` (GroupUpdateDescriptionPayload): Group description data
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec set_group_description(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateDescriptionPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def set_group_description(connection, instance_key, group_id, data, _opts \\ []) do
+    request =
+      %{}
+      |> method(:put)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/description")
+      |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Set group locked.
+  Set if non-admins are allowed to change the group dp and other stuff
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `locked` (boolean()): Locked status
+  - `group_id` (String.t): Group id of the group
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec set_group_locked(Tesla.Env.client, String.t, boolean(), String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def set_group_locked(connection, instance_key, locked, group_id, _opts \\ []) do
+    request =
+      %{}
+      |> method(:put)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/lock")
+      |> ensure_body()
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Set group name.
+  Changes the group name. The max limit is 22 chars
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `group_id` (String.t): Group id of the group
+  - `data` (GroupUpdateNamePayload): Group name data
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec set_group_name(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.GroupUpdateNamePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def set_group_name(connection, instance_key, group_id, data, _opts \\ []) do
+    request =
+      %{}
+      |> method(:put)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/name")
       |> add_param(:body, :body, data)
       |> Enum.into([])
 
@@ -529,7 +565,7 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `group_id` (String.t): Group id of the group
-  - `instances_instance_key_groups_group_id_profile_pic_put_request` (InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest): 
+  - `set_group_picture_request` (SetGroupPictureRequest): 
   - `opts` (keyword): Optional parameters
 
   ### Returns
@@ -537,49 +573,13 @@ defmodule WhatsAPI.Api.GroupManagement do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_groups_group_id_profile_pic_put(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.InstancesInstanceKeyGroupsGroupIdProfilePicPutRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_group_id_profile_pic_put(connection, instance_key, group_id, instances_instance_key_groups_group_id_profile_pic_put_request, _opts \\ []) do
+  @spec set_group_picture(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.SetGroupPictureRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def set_group_picture(connection, instance_key, group_id, set_group_picture_request, _opts \\ []) do
     request =
       %{}
       |> method(:put)
       |> url("/instances/#{instance_key}/groups/#{group_id}/profile-pic")
-      |> add_param(:body, :body, instances_instance_key_groups_group_id_profile_pic_put_request)
-      |> Enum.into([])
-
-    connection
-    |> Connection.request(request)
-    |> evaluate_response([
-      {200, %WhatsAPI.Model.ApiResponse{}},
-      {400, %WhatsAPI.Model.ApiResponse{}},
-      {401, %WhatsAPI.Model.ApiResponse{}},
-      {404, %WhatsAPI.Model.ApiResponse{}},
-      {500, %WhatsAPI.Model.ApiResponse{}}
-    ])
-  end
-
-  @doc """
-  Get group from invite link.
-  Gets a group info from an invite link. An invite link is a link that can be used to join a group. It is usually in the format https://chat.whatsapp.com/{invitecode}
-
-  ### Parameters
-
-  - `connection` (WhatsAPI.Connection): Connection to server
-  - `instance_key` (String.t): Instance key
-  - `invite_link` (String.t): The invite link to check
-  - `opts` (keyword): Optional parameters
-
-  ### Returns
-
-  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
-  - `{:error, Tesla.Env.t}` on failure
-  """
-  @spec instances_instance_key_groups_invite_info_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_groups_invite_info_get(connection, instance_key, invite_link, _opts \\ []) do
-    request =
-      %{}
-      |> method(:get)
-      |> url("/instances/#{instance_key}/groups/invite-info")
-      |> add_param(:query, :invite_link, invite_link)
+      |> add_param(:body, :body, set_group_picture_request)
       |> Enum.into([])
 
     connection

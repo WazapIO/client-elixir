@@ -25,8 +25,8 @@ defmodule WhatsAPI.Api.Miscellaneous do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_misc_profile_pic_get(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_misc_profile_pic_get(connection, instance_key, jid, _opts \\ []) do
+  @spec get_profile_pic(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_profile_pic(connection, instance_key, jid, _opts \\ []) do
     request =
       %{}
       |> method(:get)
@@ -61,8 +61,8 @@ defmodule WhatsAPI.Api.Miscellaneous do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec instances_instance_key_misc_user_info_post(Tesla.Env.client, String.t, WhatsAPI.Model.UserInfoPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def instances_instance_key_misc_user_info_post(connection, instance_key, data, _opts \\ []) do
+  @spec get_users_info(Tesla.Env.client, String.t, WhatsAPI.Model.UserInfoPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_users_info(connection, instance_key, data, _opts \\ []) do
     request =
       %{}
       |> method(:post)

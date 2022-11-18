@@ -206,6 +206,42 @@ defmodule WhatsAPI.Api.MessageSending do
   end
 
   @doc """
+  Send a group invite message
+  Sends a group invite message to the specified number. Don't include \"https://chat.whatsapp.com/\" in the invite code.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `data` (GroupInviteMessagePayload): Message data
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec send_group_invite(Tesla.Env.client, String.t, WhatsAPI.Model.GroupInviteMessagePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_group_invite(connection, instance_key, data, _opts \\ []) do
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/send/group-invite")
+      |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
   Send raw image.
   Sends a image message by uploading to the WhatsApp servers every time. This is not recommended for bulk sending.
 
@@ -214,7 +250,7 @@ defmodule WhatsAPI.Api.MessageSending do
   - `connection` (WhatsAPI.Connection): Connection to server
   - `instance_key` (String.t): Instance key
   - `to` (String.t): The recipient's number
-  - `send_image_request` (SendImageRequest): 
+  - `update_profile_pic_request` (UpdateProfilePicRequest): 
   - `opts` (keyword): Optional parameters
     - `:caption` (String.t): Attached caption
 
@@ -223,8 +259,8 @@ defmodule WhatsAPI.Api.MessageSending do
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec send_image(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.SendImageRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def send_image(connection, instance_key, to, send_image_request, opts \\ []) do
+  @spec send_image(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.UpdateProfilePicRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_image(connection, instance_key, to, update_profile_pic_request, opts \\ []) do
     optional_params = %{
       :caption => :query
     }
@@ -234,7 +270,7 @@ defmodule WhatsAPI.Api.MessageSending do
       |> method(:post)
       |> url("/instances/#{instance_key}/send/image")
       |> add_param(:query, :to, to)
-      |> add_param(:body, :body, send_image_request)
+      |> add_param(:body, :body, update_profile_pic_request)
       |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 

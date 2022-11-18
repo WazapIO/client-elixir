@@ -194,6 +194,41 @@ defmodule WhatsAPI.Api.GroupManagement do
   end
 
   @doc """
+  Get all participants.
+  Returns all participants of the group.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `group_id` (String.t): Group id of the group
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec get_all_participants(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def get_all_participants(connection, instance_key, group_id, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/groups/#{group_id}/participants")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
   Get group.
   Fetches the group data.
 
@@ -286,6 +321,42 @@ defmodule WhatsAPI.Api.GroupManagement do
       %{}
       |> method(:get)
       |> url("/instances/#{instance_key}/groups/#{group_id}/invite-code")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Join group with invite code.
+  Joins a group with group invite link. An invite link is a link that can be used to join a group. It is usually in the format https://chat.whatsapp.com/{invitecode} You have to put invite_code in the url of the request. The invite code is the part after https://chat.whatsapp.com/ For example, if the invite link is https://chat.whatsapp.com/dsfsf34r3d3dsds, then the invite code is `dsfsf34r3d3dsds“
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `invite_code` (String.t): The invite code of group you want to join
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec join_group_with_link(Tesla.Env.client, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def join_group_with_link(connection, instance_key, invite_code, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/instances/#{instance_key}/groups/join")
+      |> add_param(:query, :invite_code, invite_code)
       |> Enum.into([])
 
     connection

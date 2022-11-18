@@ -10,6 +10,50 @@ defmodule WhatsAPI.Api.Miscellaneous do
   import WhatsAPI.RequestBuilder
 
   @doc """
+  Download media
+  Downloads the media from the given media keys.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `file_type` (String.t): File type
+  - `data` (FileUpload): Media data
+  - `opts` (keyword): Optional parameters
+    - `:response_type` (String.t): Response type (file, base64)
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec download_media(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.FileUpload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def download_media(connection, instance_key, file_type, data, opts \\ []) do
+    optional_params = %{
+      :response_type => :query
+    }
+
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/misc/download")
+      |> add_param(:query, :file_type, file_type)
+      |> add_param(:body, :body, data)
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
   Get profile pic.
   Returns the profile pic of the given user.
 
@@ -68,6 +112,81 @@ defmodule WhatsAPI.Api.Miscellaneous do
       |> method(:post)
       |> url("/instances/#{instance_key}/misc/user-info")
       |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Set chat presence
+  Sets the presence of the given chat. (Typing, Recording, Paused) Options: typing, recording, paused
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `jid` (String.t): JID
+  - `presence` (String.t): Presence
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec set_chat_presence(Tesla.Env.client, String.t, String.t, String.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def set_chat_presence(connection, instance_key, jid, presence, _opts \\ []) do
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/misc/chat-presence")
+      |> add_param(:query, :jid, jid)
+      |> add_param(:query, :presence, presence)
+      |> ensure_body()
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
+
+  @doc """
+  Update profile picture
+  Changes the profile pic of the current logged in user.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `update_profile_pic_request` (UpdateProfilePicRequest): 
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec update_profile_pic(Tesla.Env.client, String.t, WhatsAPI.Model.UpdateProfilePicRequest.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def update_profile_pic(connection, instance_key, update_profile_pic_request, _opts \\ []) do
+    request =
+      %{}
+      |> method(:put)
+      |> url("/instances/#{instance_key}/misc/profile-pic")
+      |> add_param(:body, :body, update_profile_pic_request)
       |> Enum.into([])
 
     connection

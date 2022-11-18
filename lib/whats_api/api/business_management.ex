@@ -42,4 +42,40 @@ defmodule WhatsAPI.Api.BusinessManagement do
       {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
+
+  @doc """
+  Send a payment request.
+  Sends an payment request to a user. Feature is still in beta.
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `data` (PaymentRequestPayload): Data
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec send_payment_request(Tesla.Env.client, String.t, WhatsAPI.Model.PaymentRequestPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def send_payment_request(connection, instance_key, data, _opts \\ []) do
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/business/payment-request")
+      |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
 end

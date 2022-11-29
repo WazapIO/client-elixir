@@ -40,6 +40,7 @@ lib/whats_api/model/template_button_with_media_payload.ex
 lib/whats_api/model/text_message.ex
 lib/whats_api/model/update_profile_pic_request.ex
 lib/whats_api/model/upload_media_request.ex
+lib/whats_api/model/url_media_upload_payload.ex
 lib/whats_api/model/user_info_payload.ex
 lib/whats_api/model/webhook_payload.ex
 lib/whats_api/request_builder.ex

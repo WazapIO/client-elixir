@@ -618,4 +618,42 @@ defmodule WhatsAPI.Api.MessageSending do
       {500, %WhatsAPI.Model.ApiResponse{}}
     ])
   end
+
+  @doc """
+  Upload media from url.
+  Uploads media from a url to WhatsApp servers and returns the media keys. Store the returned media keys, as you will need them to send media messages
+
+  ### Parameters
+
+  - `connection` (WhatsAPI.Connection): Connection to server
+  - `instance_key` (String.t): Instance key
+  - `type` (String.t): Media type
+  - `data` (UrlMediaUploadPayload): Media data
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec upload_media_from_url(Tesla.Env.client, String.t, String.t, WhatsAPI.Model.UrlMediaUploadPayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def upload_media_from_url(connection, instance_key, type, data, _opts \\ []) do
+    request =
+      %{}
+      |> method(:post)
+      |> url("/instances/#{instance_key}/send/upload-url")
+      |> add_param(:query, :type, type)
+      |> add_param(:body, :body, data)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, %WhatsAPI.Model.ApiResponse{}},
+      {400, %WhatsAPI.Model.ApiResponse{}},
+      {401, %WhatsAPI.Model.ApiResponse{}},
+      {404, %WhatsAPI.Model.ApiResponse{}},
+      {500, %WhatsAPI.Model.ApiResponse{}}
+    ])
+  end
 end

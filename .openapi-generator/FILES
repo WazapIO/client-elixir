@@ -15,6 +15,7 @@ lib/whats_api/model/button_message_payload.ex
 lib/whats_api/model/button_message_with_media_payload.ex
 lib/whats_api/model/contact_message_payload.ex
 lib/whats_api/model/contact_message_payload_vcard.ex
+lib/whats_api/model/create_instance_payload.ex
 lib/whats_api/model/file_upload.ex
 lib/whats_api/model/group_create_payload.ex
 lib/whats_api/model/group_invite_message_payload.ex

@@ -52,25 +52,21 @@ defmodule WhatsAPI.Api.Instance do
   ### Parameters
 
   - `connection` (WhatsAPI.Connection): Connection to server
+  - `data` (CreateInstancePayload): Instance data
   - `opts` (keyword): Optional parameters
-    - `:instance_key` (String.t): Insert instance key if you want to provide custom key
 
   ### Returns
 
   - `{:ok, WhatsAPI.Model.ApiResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec create_instance(Tesla.Env.client, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
-  def create_instance(connection, opts \\ []) do
-    optional_params = %{
-      :instance_key => :query
-    }
-
+  @spec create_instance(Tesla.Env.client, WhatsAPI.Model.CreateInstancePayload.t, keyword()) :: {:ok, WhatsAPI.Model.ApiResponse.t} | {:error, Tesla.Env.t}
+  def create_instance(connection, data, _opts \\ []) do
     request =
       %{}
-      |> method(:get)
+      |> method(:post)
       |> url("/instances/create")
-      |> add_optional_params(optional_params, opts)
+      |> add_param(:body, :body, data)
       |> Enum.into([])
 
     connection
